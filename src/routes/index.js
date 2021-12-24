@@ -7,6 +7,8 @@ import Join from '@/components/Join.vue';
 import Login from '@/components/Login.vue';
 import Logout from '@/components/Logout.vue';
 import Mypage from '@/components/Mypage.vue';
+import Board from '@/components/Board.vue';
+
 
 //URL과 컴포넌트의 연결
 const routes =[
@@ -16,6 +18,8 @@ const routes =[
     {path : '/login', name:'Login', component:Login},
     {path : '/logout', name:'Logout', component:Logout},
     {path : '/mypage', name:'Mypage', component:Mypage},
+    {path : '/board', name:'Board', component:Board},
+
 ]
 
 //실제 라우트 적용

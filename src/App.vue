@@ -3,17 +3,18 @@
     
     <el-container>
       <el-header>
-        <el-menu :default-active="activeIndex" class="el-menu-demo"
-          mode="horizontal" @select="handleSelect" router="true">
-          <el-menu-item index="home">홈</el-menu-item>
+        <el-menu  class="el-menu-demo" mode="horizontal" :router="true">
+          <el-menu-item index="home" ref="home">홈</el-menu-item>
+          <el-menu-item index="login" ref="login" v-show="!logged">로그인</el-menu-item>
+          <el-menu-item index="logout" ref="logout" v-show="logged">로그아웃</el-menu-item>
+          <el-menu-item index="mypage" ref="mypage" v-show="logged">마이페이지</el-menu-item>
+          <el-menu-item index="join" ref="join">회원가입</el-menu-item>
+          <el-menu-item index="board" ref="board">게시판</el-menu-item>
 
-          <el-menu-item index="login" v-if="!logged">로그인</el-menu-item>
-          <el-menu-item index="logout" v-if="logged">로그아웃</el-menu-item>
-          <el-menu-item index="mypage" v-if="logged">마이페이지</el-menu-item>
-          <el-menu-item index="join">회원가입</el-menu-item>
-          
         </el-menu>
       </el-header>
+      <!-- v-if = 태그를 생성시키지 않음 
+         v-show = 태그를 생성, 숨김으로 -->
 
       <el-main>
         <router-view @changeLogged="changeLogged"></router-view>
@@ -26,69 +27,64 @@
 </template>
 
 <script>
+  import {useStore} from 'vuex';
   export default {
+    // 가장먼저 호출됨. 태그를 생성이 완료가 안되서 태그를 찾거나 클릭 x
+    // DOM 접근 불가 벡엔드로 데이터를 받는것.
     created(){
-      console.log('created');
-      const tmp = sessionStorage.getItem("activeIndex");
-      console.log(tmp);
-      if(tmp === null){
-        this.activeIndex ='home';
-        this.$router.push({path:'/home'});
-      }
-      else{
-        this.activeIndex = tmp;
-      }
-
-      this.changeLogged();
+      
+    
     },
+
+    // DOM 접근이 가능 ex) 태그를 조작, 클릭등을 수행
     mounted(){
-      console.log('mounted');
+      //localhost:8080/abc / abc abc
+      console.log(window.location.pathname.substr(1));
+      const path = window.location.pathname.substr(1);
+      this.changeLogged(path);
+      //console.log(path);
+
+      // 메소드 로그인상태를 체크해서 메뉴를 변경(로그인, 로그아웃)
+      //path클릭을 해야되는 메뉴의 종류를 전달
+
+      // store가 변화할떄 자동으로 수행
+      this.store.subscribe((mutation, state)=>{
+        console.log(mutation, state);
+
+        if(mutation.type==='setMenu'){
+          const tmp = mutation.payload;
+          this.changeLogged(tmp);
+        }
+      });
     },
 
-    updated(){
-      console.log('updated');
-    },
     data(){
       return{
-        activeIndex : '',
-        logged      : false,
+        logged : false,
+        store : useStore()
       }
     },
 
     methods:{
-      handleSelect(idx){
-        console.log('App.vue => handleSelect', idx);
-        this.$router.push({path:idx});
-        // 세션저장소에 현재의 메뉴의 index를 저장
-
-        if(idx === 'home') {
-          this.$router.push({name:'Home'});
-        }
-        if(idx === 'login') {
-          this.$router.push({name:'Login'});
-        }
-        if(idx === 'logout') {
-          this.$router.push({name:'Logout'});
-        }
-        if(idx === 'join') {
-          this.$router.push({name:'Join'});
-        }
-        if(idx === 'mypage') {
-          this.$router.push({name:'Mypage'});
-        }
-        // 세션저장소에 현재의 메뉴의 index를 저장
-        sessionStorage.setItem('activeIndex', idx);
-      },
-
-      changeLogged(){
+      
+      changeLogged(path){//현재 로그인 상태를 확인하기
+        console.log('changeLogged', path);
+        // 세션 저장소로부터 토큰값(인증키)을 읽음
         const token = sessionStorage.getItem("TOKEN");
-        if(token === null){
-          this.logged = false;
+
+        if(token === null){ //로그인을 못했음
+          this.logged = false; //state변수에 logged를 거짓
         }
         else{
           this.logged = true;
         }
-        this.activeIndex ='home';
+
+        //this.$refs.home.click(); === this.$refs['home'].click();
+        //this.$refs.login.click(); === this.$refs['login'].click();
+        //this.$refs.path.click(); 레퍼런스에서 패스 찾기(x) === this.$refs[path].click(); //path 내용물 찾기
+        
+
+        this.$refs[path].$el.click(); //path 내용물 찾기
 
       }
     } 
