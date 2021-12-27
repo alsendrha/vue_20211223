@@ -11,30 +11,35 @@
 </template>
 
 <script>
-    import axios from 'axios';
+    import {useStore} from 'vuex';
     export default {
-        created(){
-            this.handleData();
-
-        },
         data(){
             return{
                 items : [],
-                page : 1,
+                store : useStore(),
             }
+        },
+        created(){
+            this.handleData();
+        },
+
+        mounted(){
+            this.store.subscribe((mutation, state) => {
+                console.log(mutation, state);
+                if(mutation.type === 'setItems'){
+                    this.items = mutation.payload;
+                }
+            });
         },
         methods:{
             async handleData(){
-                const url = `http://ihongss.com/json/board.json?page=${this.page}`;
-                const headers = {"Content-Type":"application/json"};
-                const response = await axios.get(url, {headers:headers});
-                console.log(response);
-                if(response.data.ret === 'y'){
-                this.items = response.data.data
-                }
-                console.log(url);
+                await this.store.dispatch('handleData', {page:1});
+
+                this.items = this.store.getters.getItems;
+
             }
         }
+       
         
     }
 </script>

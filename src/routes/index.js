@@ -8,6 +8,7 @@ import Login from '@/components/Login.vue';
 import Logout from '@/components/Logout.vue';
 import Mypage from '@/components/Mypage.vue';
 import Board from '@/components/Board.vue';
+import BoardOne from '@/components/BoardOne.vue';
 
 
 //URL과 컴포넌트의 연결
@@ -19,6 +20,7 @@ const routes =[
     {path : '/logout', name:'Logout', component:Logout},
     {path : '/mypage', name:'Mypage', component:Mypage},
     {path : '/board', name:'Board', component:Board},
+    {path : '/boardone', name:'BoardOne', component:BoardOne},
 
 ]
 

@@ -83,9 +83,9 @@
         //this.$refs.login.click(); === this.$refs['login'].click();
         //this.$refs.path.click(); 레퍼런스에서 패스 찾기(x) === this.$refs[path].click(); //path 내용물 찾기
         
-
+        if(typeof this.$refs[path] !== 'undefined'){
         this.$refs[path].$el.click(); //path 내용물 찾기
-
+        }
       }
     } 
   }
