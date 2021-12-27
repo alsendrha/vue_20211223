@@ -1,5 +1,5 @@
 //node_module로 부터 필요한 라이브러리 import
-import { createWebHistory, createRouter } from "vue-router";
+import { createWebHashHistory, createRouter } from "vue-router";
 
 // 추가하고자 하는 컴포넌트들
 import Home from '@/components/Home.vue';
@@ -9,6 +9,7 @@ import Logout from '@/components/Logout.vue';
 import Mypage from '@/components/Mypage.vue';
 import Board from '@/components/Board.vue';
 import BoardOne from '@/components/BoardOne.vue';
+import BoardWrite from '@/components/BoardWrite.vue';
 
 
 //URL과 컴포넌트의 연결
@@ -21,12 +22,13 @@ const routes =[
     {path : '/mypage', name:'Mypage', component:Mypage},
     {path : '/board', name:'Board', component:Board},
     {path : '/boardone', name:'BoardOne', component:BoardOne},
+    {path : '/boardwrite', name:'BoardWrite', component:BoardWrite},
 
 ]
 
 //실제 라우트 적용
 const router = createRouter({
-    history : createWebHistory(),
+    history : createWebHashHistory(),
     routes,
 });
 

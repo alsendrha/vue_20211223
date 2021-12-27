@@ -1,5 +1,6 @@
 <template>
     <div>
+        <el-button type="primary" @click="handleWrite">글쓰기</el-button>
         <el-table :data="items" style="width: 100%; cursor:pointer;" @row-click="rowclick">
             <el-table-column prop="no" label="글번호" width="120" />
             <el-table-column prop="title" label="제목" width="300" />
@@ -39,6 +40,9 @@
             });
         },
         methods:{
+            handleWrite(){
+                this.$router.push({ name : 'BoardWrite' })
+            },
             //벡엔드에서 필요한 데이터를 받아서 items에 넣음
             async handleData(){
                 // action에 정의되어 있는 handleData호출
