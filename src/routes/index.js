@@ -10,6 +10,9 @@ import Mypage from '@/components/Mypage.vue';
 import Board from '@/components/Board.vue';
 import BoardOne from '@/components/BoardOne.vue';
 import BoardWrite from '@/components/BoardWrite.vue';
+import Seller from '@/components/Seller.vue';
+import SellerOne from '@/components/SellerOne.vue';
+import ItemContent from '@/components/ItemContent.vue';
 
 
 //URL과 컴포넌트의 연결
@@ -23,6 +26,9 @@ const routes =[
     {path : '/board', name:'Board', component:Board},
     {path : '/boardone', name:'BoardOne', component:BoardOne},
     {path : '/boardwrite', name:'BoardWrite', component:BoardWrite},
+    {path : '/seller', name:'Seller', component:Seller},
+    {path : '/sellerOne', name:'SellerOne', component:SellerOne},
+    {path : '/itemcontent', name:'ItemContent', component:ItemContent},
 
 ]
 

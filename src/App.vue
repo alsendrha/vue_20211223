@@ -10,6 +10,7 @@
           <el-menu-item index="mypage" ref="mypage" v-show="logged">마이페이지</el-menu-item>
           <el-menu-item index="join" ref="join">회원가입</el-menu-item>
           <el-menu-item index="board" ref="board">게시판</el-menu-item>
+          <el-menu-item index="seller" ref="seller">판매자</el-menu-item>
 
         </el-menu>
       </el-header>

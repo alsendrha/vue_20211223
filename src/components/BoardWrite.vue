@@ -3,9 +3,6 @@
         <el-card shadow="always">
             <h2>게시판 글쓰기</h2>
             <el-tabs>
-            <el-input v-model="board.no" label="번호" placeholder="번호" />
-            </el-tabs>
-            <el-tabs>
             <el-input v-model="board.title" placeholder="제목" />
             </el-tabs>
             <el-tabs>
@@ -15,6 +12,7 @@
             <el-input v-model="board.content" :rows="15" type="textarea" />
             </el-tabs>
             <el-button type="success" @click="handleBoard1">등록</el-button>
+            <el-button type="success" @click="handleBoard2">취소</el-button>
         </el-card>
     </div>
 </template>
@@ -24,7 +22,6 @@
         data(){
             return{
                 board : {
-                    no      : '',
                     title   : '',
                     writer   : '',
                     content : '',
@@ -38,7 +35,6 @@
                 const headers = {"Content-Type":"application/json"};
                 const body = this.board;
                 // const body = { 
-                //     no : this.board.no,
                 //     title :this.board.title,
                 //     writer : this.board.writer,
                 //     content : this.board.content
@@ -50,6 +46,9 @@
                     this.$router.push({name:"Board"});
                 }
                  
+            },
+            handleBoard2(){
+                this.$router.push({name:"Board"});
             }
         }
         
