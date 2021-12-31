@@ -9,11 +9,9 @@
             <el-descriptions-item label="사진" :span="2"><el-image :src="item.image" style="width:50%"/>
             </el-descriptions-item>
         </el-descriptions>
-        <el-button type="primary" @click="handleBoard1">수정</el-button>
-        <el-button type="primary" @click="handleBoard2">돌아가기</el-button>
         
-
-        
+        <el-button type="primary" @click="handleUpdate">수정</el-button>
+        <el-button type="primary" @click="handleSeller">돌아가기</el-button>
     </div>
 </template>
 
@@ -41,12 +39,10 @@
                     this.item = response.data.result;
                     console.log(this.item);
                 }
+            },
+            handleSeller(){
+            this.$router.push({name:'Seller'}); 
             }
-        },
-       
-        
-        handleBoard2(){
-            this.$router.push({name:"Seller"});
         }
         
         

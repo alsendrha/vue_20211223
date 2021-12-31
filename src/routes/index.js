@@ -13,6 +13,7 @@ import BoardWrite from '@/components/BoardWrite.vue';
 import Seller from '@/components/Seller.vue';
 import SellerOne from '@/components/SellerOne.vue';
 import ItemContent from '@/components/ItemContent.vue';
+import Itemimsertbatch from '@/components/Itemimsertbatch.vue';
 
 
 //URL과 컴포넌트의 연결
@@ -29,7 +30,7 @@ const routes =[
     {path : '/seller', name:'Seller', component:Seller},
     {path : '/sellerOne', name:'SellerOne', component:SellerOne},
     {path : '/itemcontent', name:'ItemContent', component:ItemContent},
-
+    {path : '/itemimsertbatch', name:'Itemimsertbatch', component:Itemimsertbatch},
 ]
 
 //실제 라우트 적용

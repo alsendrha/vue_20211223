@@ -8,7 +8,10 @@
             <el-button type="text" @click="dialog1 = true">
                 <el-button type="primary"  size="mini" @click="insertaa">물품등록</el-button>
             </el-button>
-             
+            <router-link to="Itemimsertbatch" style="margin-left:5px">
+             <el-button type="primary"  size="mini" @click="insertaa">일괄등록</el-button>
+            </router-link>
+            <el-button type="danger"  size="mini" style="margin-left:5px" @click="handledelete">일괄삭제</el-button>
             
             <el-dialog v-model="dialog1" title="Tips" width="30%" :before-close="hanldeClose">
                 <span>목록작성</span>
@@ -36,23 +39,61 @@
             </el-dialog>
             
             
-            <el-table :data="items" style="width: 100%; cursor:pointer;" @row-click="rowclick" >
-                <el-table-column prop="_id" label="코드" width="180" />
-                <el-table-column prop="name" label="물품명" width="180" />
-                <el-table-column prop="price" label="가격" />
-                <el-table-column prop="quantity" label="재고수량" />
+            <el-table :data="items" style="width: 100%;" >
+                <el-table-column fixed="left" label="체크" width="50">
+                    <template #default="scope">
+                        <input type="checkbox" v-model="items[scope.$index].chk1" size="large">
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="코드" width="100" style="cursor:pointer;"> 
+                <template #default="scope">
+                    <div @click="handlePage(scope.row._id)">
+                    {{scope.row._id}}
+                    </div>
+                </template>
+                
+                </el-table-column>
+                
+                <el-table-column prop="name" label="물품명" width="240" />
+                <el-table-column prop="price" label="가격" width="180" />
+                <el-table-column prop="quantity" label="재고수량" width="180"  />
                 <el-table-column prop="regdate" label="등록일" />
-                <el-table-column fixed="right" label="Operations" width="120">
+                <el-table-column fixed="right" label="Operations" width="220">
                     <template #default="scope">
                         <el-button type="danger" size="small" @click.prevent="deleteRow(scope.$index, scope.row)">
                             삭제
                         </el-button>
+                        <el-button type="primary" size="small"  @click.prevent="updateRow(scope.$index, scope.row)">
+                            수정
+                        </el-button>       
                     </template>
                 </el-table-column>
             </el-table>
             <el-pagination layout="prev, pager, next" :total="total" @current-change="currentchange">
             </el-pagination>
         </el-card>
+
+
+        <el-dialog v-model="dialog3" title="Tips" width="30%">
+            <span>
+                <img :src="item1.image" style="width:100px" />
+                <input type="file" @change="handleImage" />
+            </span>
+
+            <p><input type="text" v-model="item1.name" /></p>
+            <p><textarea v-model="item1.content"></textarea></p>
+            <p><input type="text" v-model="item1.price" /></p>
+            <p><input type="text" v-model="item1.quantity" /></p>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="handleUpdateAction">수정</el-button>
+                    <el-button @click="dialog3 = false">닫기</el-button>
+                </span>
+            </template>
+        </el-dialog>
+
+
     </div>
 </template>
 
@@ -71,23 +112,67 @@
                 page : 1,
                 total : 0,
                 dialog1 : false,
+                dialog3 : false,
                 fileList: [],
                 dialogImageUrl: '',
                 dialogVisible: false,
-
+                item1 : '',
+                chk1 : [],
                 item : {
                     image : null,
                     name : '',
                     content : '',
                     price : 0,
                     quantity : 1000,
-                }
-
-
+                },
+                items : [],
             }
-
         },
         methods : {
+            handledelete(){
+                let arr = [],
+                for(let i=0; i<this.items.length;i++){
+                    if(this.items[i].chk1===true){
+                        console.log(this.items[i]._id);
+                        arr.push(this.items[i]._id);
+                    }
+                }
+
+            },
+
+            handleImage(e){
+                console.log("Seller.vue => handleImage");
+                console.log(e);
+                //벡엔드로 변경할 이미지 실제정보
+                this.item1['image1'] = e.target.files[0];
+
+                //프론트에서 미리보기용 임시 URL
+                this.item1['image1URL'] = URL.createObjectURL(e.target.files[0]);
+
+                // dialog img src를 변경하기
+                //this.item1['image'] = URL.createObjectURL(e.target.files[0]);
+            },
+
+            async handleUpdateAction(){
+                console.log("Seller.vue => handleUpdateAction");
+                const url = `/item/update?code=${this.item1._id}`;
+                const headers = {"Content-Type":"mutipart/form-data"};
+                const body = new FormData();
+                body.append("name", this.item1.name);
+                body.append("content", this.item1.content);
+                body.append("price", this.item1.price);
+                body.append("quantity", this.item1.quantity);
+                body.append("file", this.item1.image1);
+                const response = await this.axios.put(url, body, {headers:headers});
+
+                if(response.data. status===200){
+                    alert('수정되었습니다.');
+                    this.dialog3= false
+                    this.item1.image1= '';
+                    this.handleData();
+                }
+            },
+
             async handleData(){
                 const url = `/item/select?page=${this.page}`;
                 const headers = {"Content-Type":"application/json"};
@@ -96,6 +181,7 @@
                 if(response.data.status === 200) {
                     this.items = response.data.result;
                     this.total = response.data.total;
+                
                 }
             },
 
@@ -103,6 +189,23 @@
                 console.log('seller => currentchange', page);
                 this.page = page;
                 this.handleData();
+            },
+            async updateRow(idx, row){
+                console.log(idx, row);
+
+                const url = `/item/selectone?code=${row._id}`;
+                const headers = {"Content-Type":"application/json"};
+                 
+                const response = await this.axios.get(url, {headers:headers});
+                console.log(response.data)
+                if(response.data.status===200){
+                    this.item1 = response.data.result;
+                    this.dialog3= true
+                }
+
+                //코드를 이용해서 백엔드에서 1개의 정보를 받음
+                //모달창에 v-model연결
+                //모달창 띄우기
             },
 
             async deleteRow(idx, row){
@@ -172,11 +275,10 @@
                     this.handleData();
                 }
             },
-            rowclick(row){
-                console.log(row);
+            handlePage(code){
                     this.$router.push({
                         name:'ItemContent',
-                         query:{code:row._id}
+                         query:{code:code}
                     });
                 
             }
