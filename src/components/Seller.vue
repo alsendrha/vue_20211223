@@ -3,7 +3,7 @@
         <el-card shadow="always">
             <h4>판매자</h4>
             <hr />
-
+          
             <p>물품목록</p>
             <el-button type="text" @click="dialog1 = true">
                 <el-button type="primary"  size="mini" @click="insertaa">물품등록</el-button>
@@ -11,7 +11,9 @@
             <router-link to="Itemimsertbatch" style="margin-left:5px">
              <el-button type="primary"  size="mini" @click="insertaa">일괄등록</el-button>
             </router-link>
-            <el-button type="danger"  size="mini" style="margin-left:5px" @click="handledelete">일괄삭제</el-button>
+            <el-button type="danger"  size="mini" style="margin-left:5px" @click="handleDlete">일괄삭제</el-button>
+
+            <el-button type="danger"  size="mini" style="margin-left:5px" @click="handleUpdateBatch">일괄수정</el-button>
             
             <el-dialog v-model="dialog1" title="Tips" width="30%" :before-close="hanldeClose">
                 <span>목록작성</span>
@@ -46,9 +48,9 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="코드" width="100" style="cursor:pointer;"> 
+                <el-table-column label="코드" width="100" > 
                 <template #default="scope">
-                    <div @click="handlePage(scope.row._id)">
+                    <div @click="handlePage(scope.row._id)" style="cursor:pointer;">
                     {{scope.row._id}}
                     </div>
                 </template>
@@ -117,7 +119,7 @@
                 dialogImageUrl: '',
                 dialogVisible: false,
                 item1 : '',
-                chk1 : [],
+               
                 item : {
                     image : null,
                     name : '',
@@ -129,15 +131,46 @@
             }
         },
         methods : {
-            handledelete(){
-                let arr = [],
-                for(let i=0; i<this.items.length;i++){
-                    if(this.items[i].chk1===true){
-                        console.log(this.items[i]._id);
-                        arr.push(this.items[i]._id);
+
+            async handleUpdateBatch(){
+                let arr = [];
+                    //items에  있는 chk1의 값이 true인것 중에서 코드값
+                    for(let tmp of this.items){
+                        //console.log(tmp);
+                        if(tmp.chk1===true){
+                            arr.push({code:tmp._id});
+                        }
+                    }
+                    console.log(arr);
+                    //주의) arr변수는 object를 string 변환해서 전송
+                this.$router.push({name:'ItemUpdateBatch', 
+                        params:{code:JSON.stringify(arr)}});
+            },
+
+            async handleDlete(){
+                const ret = confirm('삭제할까요??');
+                if(ret===true){
+                    let arr = [];
+                    //items에  있는 chk1의 값이 true인것 중에서 코드값
+                    for(let tmp of this.items){
+                        //console.log(tmp);
+                        if(tmp.chk1===true){
+                            arr.push({code:tmp._id});
+                        }
+                    }
+                    console.log(arr);
+
+                    const url =`/item/deletebatch`;
+                    const headers = {"Content-Type":"application/json"};
+                    const body = arr;
+                    const response = await this.axios.delete(url, {headers:headers, data:body} );
+                    console.log(response.data);
+
+                    if(response.data.status===200){
+                        alert('일괄 삭제 되었습니다');
+                        this.handleData();
                     }
                 }
-
             },
 
             handleImage(e){
@@ -154,7 +187,7 @@
             },
 
             async handleUpdateAction(){
-                console.log("Seller.vue => handleUpdateAction");
+          
                 const url = `/item/update?code=${this.item1._id}`;
                 const headers = {"Content-Type":"mutipart/form-data"};
                 const body = new FormData();
@@ -165,10 +198,9 @@
                 body.append("file", this.item1.image1);
                 const response = await this.axios.put(url, body, {headers:headers});
 
-                if(response.data. status===200){
+                if(response.data.status===200){
                     alert('수정되었습니다.');
                     this.dialog3= false
-                    this.item1.image1= '';
                     this.handleData();
                 }
             },
@@ -181,6 +213,8 @@
                 if(response.data.status === 200) {
                     this.items = response.data.result;
                     this.total = response.data.total;
+
+                    
                 
                 }
             },
