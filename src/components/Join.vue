@@ -116,7 +116,7 @@
             }
         },
         methods:{
-            handleJoin(){
+            async handleJoin(){
                 if(this.member.userid === ""){
                     alert('아이디를 입력하세요.');
                     this.$refs.userid.focus();
@@ -183,6 +183,8 @@
                     alert('회원가입이 되었습니다');
                     this.$router.push({name:'Home'});
                 }
+
+                
             },
             handleHome(){
                 this.$router.push({name:'Home'});
