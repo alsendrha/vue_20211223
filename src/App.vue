@@ -8,9 +8,9 @@
           <el-menu-item index="login" ref="login" v-show="!logged">로그인</el-menu-item>
           <el-menu-item index="logout" ref="logout" v-show="logged">로그아웃</el-menu-item>
           <el-menu-item index="mypage" ref="mypage" v-show="logged">마이페이지</el-menu-item>
-          <el-menu-item index="join" ref="join">회원가입</el-menu-item>
+          <el-menu-item index="join" ref="join" v-show="!logged">회원가입</el-menu-item>
           <el-menu-item index="board" ref="board">게시판</el-menu-item>
-          <el-menu-item index="seller" ref="seller">판매자</el-menu-item>
+          <el-menu-item index="seller" ref="seller" v-show="logged">판매자</el-menu-item>
 
         </el-menu>
       </el-header>
@@ -33,8 +33,7 @@
     // 가장먼저 호출됨. 태그를 생성이 완료가 안되서 태그를 찾거나 클릭 x
     // DOM 접근 불가 벡엔드로 데이터를 받는것.
     created(){
-      
-    
+
     },
 
     // DOM 접근이 가능 ex) 태그를 조작, 클릭등을 수행
@@ -51,9 +50,9 @@
       // store가 변화할떄 자동으로 수행
       this.store.subscribe((mutation, state)=>{
         console.log(mutation, state);
-
+          //로그인에서 this.store.commit('setMenu', 'home');
         if(mutation.type==='setMenu'){
-          const tmp = mutation.payload;
+          const tmp = mutation.payload; //"home"
           this.changeLogged(tmp);
         }
       });
@@ -83,7 +82,8 @@
         //this.$refs.home.click(); === this.$refs['home'].click();
         //this.$refs.login.click(); === this.$refs['login'].click();
         //this.$refs.path.click(); 레퍼런스에서 패스 찾기(x) === this.$refs[path].click(); //path 내용물 찾기
-        
+
+        // 클릭방식으로 메뉴활성화
         if(typeof this.$refs[path] !== 'undefined'){
         this.$refs[path].$el.click(); //path 내용물 찾기
         }
