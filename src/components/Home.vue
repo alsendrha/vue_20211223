@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>Home.vue</h3>
-    <vueper-slides autoplay="true" Default="12">
+    <vueper-slides autoplay="true" Default="500">
       <vueper-slide v-for="(tmp, idx) in items" 
       :key="idx" 
       :title="items.title" 
