@@ -15,6 +15,7 @@ import SellerOne from '@/components/SellerOne.vue';
 import ItemContent from '@/components/ItemContent.vue';
 import Itemimsertbatch from '@/components/Itemimsertbatch.vue';
 import ItemUpdateBatch from '@/components/ItemUpdateBatch.vue';
+import Admin1 from '@/components/Admin1.vue';
 
 
 //URL과 컴포넌트의 연결
@@ -33,6 +34,7 @@ const routes =[
     {path : '/itemcontent', name:'ItemContent', component:ItemContent},
     {path : '/itemimsertbatch', name:'Itemimsertbatch', component:Itemimsertbatch},
     {path : '/itemupdatebatch', name:'ItemUpdateBatch', component:ItemUpdateBatch},
+    {path : '/admin1', name:'Admin1', component:Admin1},
 ]
 
 //실제 라우트 적용

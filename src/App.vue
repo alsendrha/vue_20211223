@@ -11,6 +11,7 @@
           <el-menu-item index="join" ref="join" v-show="!logged">회원가입</el-menu-item>
           <el-menu-item index="board" ref="board">게시판</el-menu-item>
           <el-menu-item index="seller" ref="seller" v-show="logged">판매자</el-menu-item>
+          <el-menu-item index="admin1" ref="admin1" >관리자</el-menu-item>
 
         </el-menu>
       </el-header>

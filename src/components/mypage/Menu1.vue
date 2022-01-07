@@ -1,5 +1,6 @@
 <template>
     <div>
+        
             <el-form :inline="true" class="demo-form-inline" style="margin-bottom:-20px">
                 <el-form-item label="나이" label-width="80px">
                     <el-input v-model="member.userage" size="mini" placeholder="나이" />
@@ -42,6 +43,7 @@
                 token : sessionStorage.getItem("TOKEN"),
                emailoption : ['naver.com', 'gmail.com', 'daum.net'],
                member : '',
+               
             }
             
         },
@@ -49,8 +51,11 @@
         methods:{
             async handleInfo(){
                 const url = `/member/mypage?menu=1`
-                const headers = {"Content-Type":"application/json", "token": this.token}
-                const body = this.member;
+                const headers = {"Content-Type":"application/json", "token": this.token};
+                const body = {
+                    userage : this.member.userage,
+                    useremail : this.member.useremail1 + "@" + this.member.useremail2
+                };
                 const response = await this.axios.put(url, body, {headers:headers});
                 console.log(response.data);
                 if(response.data.status===200){

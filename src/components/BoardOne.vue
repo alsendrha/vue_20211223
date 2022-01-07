@@ -68,6 +68,7 @@
                 item1 : '',     
                 dialog2 : false,
                 dialog1 : false,
+                hanldeClose : '',
       
             }
         },
