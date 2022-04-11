@@ -9,7 +9,7 @@
 
             <el-form :inline="true" class="demo-form-inline" style="margin-bottom:-20px">
                 <el-form-item label="이메일" label-width="80px">
-                    <el-input v-model="member.useremail1" size="mini" placeholder="이메일" />
+                    <el-input v-model="member.useremail1" size="mini" placeholder="이메일" @keyup.enter="handleInfo" />
                 </el-form-item>
 
                 <el-form-item>@</el-form-item>

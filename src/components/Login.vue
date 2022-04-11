@@ -11,7 +11,7 @@
 
             <el-form :inline="true" class="demo-form-inline" style="margin-bottom:-20px">
                 <el-form-item label="암호" label-width="80px">
-                    <el-input v-model="member.upw" ref="upw" size="mini" type="password" placeholder="암호"></el-input>
+                    <el-input v-model="member.upw" ref="upw" size="mini" type="password" placeholder="암호" @keyup.enter="handleLogin" ></el-input>
                 </el-form-item>
             </el-form>
             <el-form :inline="true" class="demo-form-inline" style="margin-bottom:-20px">

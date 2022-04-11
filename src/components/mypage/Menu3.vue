@@ -3,7 +3,7 @@
                 <el-form :inline="true" class="demo-form-inline" style="margin-bottom:-20px">
                     <el-form-item label="암호입력" label-width="80px">
                         <el-input v-model="member.userpw" ref="userpw" size="mini" 
-                        type="password" placeholder="암호입력" />
+                        type="password" placeholder="암호입력" @keyup.enter="handleBy" />
                     </el-form-item>
                     <el-form-item label="" label-width="80px">
                         <el-button type="primary" size="mini" @click="handleBy">회원탈퇴</el-button>

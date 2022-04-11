@@ -17,7 +17,7 @@
             <el-form :inline="true" class="demo-form-inline" style="margin-bottom:-20px">
                 <el-form-item label="암호확인" label-width="80px">
                     <el-input v-model="member.userpw2" ref="userpw2" size="mini" 
-                    type="password" placeholder="암호확인" />
+                    type="password" placeholder="암호확인" @keyup.enter="handlePass" />
                 </el-form-item>
             </el-form>
 
